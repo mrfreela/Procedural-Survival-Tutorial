@@ -9,7 +9,14 @@ using UnityEngine.UI;
         public int pointsPerFood = 10;              
         public int pointsPerSoda = 20;              
         public int wallDamage = 1;     
-		public Text foodText;             
+		public Text foodText;
+		public AudioClip moveSound1;
+		public AudioClip moveSound2;
+		public AudioClip eatSound1;
+		public AudioClip eatSound2;
+		public AudioClip drinkSound1;
+		public AudioClip drinkSound2;
+		public AudioClip gameOverSound;             
         
         
         private Animator animator;                  
@@ -68,6 +75,7 @@ using UnityEngine.UI;
             
             if (Move (xDir, yDir, out hit)) 
             {
+				SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
             }
             
             CheckIfGameOver ();
@@ -99,6 +107,7 @@ using UnityEngine.UI;
             {
                 food += pointsPerFood;
                 foodText.text = "+" + pointsPerFood + " Food: " + food;
+				SoundManager.instance.RandomizeSfx(eatSound1,eatSound2);
                 other.gameObject.SetActive (false);
             }
             
@@ -106,7 +115,7 @@ using UnityEngine.UI;
             {
                 food += pointsPerSoda;
                 foodText.text = "+" + pointsPerSoda + " Food: " + food;
-                
+                SoundManager.instance.RandomizeSfx(drinkSound1,drinkSound2);
                 other.gameObject.SetActive (false);
             }
         }
@@ -132,7 +141,8 @@ using UnityEngine.UI;
         {
             if (food <= 0) 
             {
-                
+                SoundManager.instance.PlaySingle(gameOverSound);
+				SoundManager.instance.musicSource.Stop();
                 GameManager.instance.GameOver ();
             }
         }
